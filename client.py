@@ -17,10 +17,10 @@ def animated_loading():
 
 
 ClientSocket = socket.socket()
-host = '192.168.56.5'
+host = '192.168.253.12'
 port = 8888
 
-print("TAX PROPERTY ONLINE SYSTEM")
+
 print("Connecting.....")
 
 try:
@@ -28,32 +28,23 @@ try:
 except socket.error as e:
     print(str(e))
 
-Response = ClientSocket.recv(1024)
-print(Response.decode('utf-8'))
-cResp = "Client 1 is connected to the server!"
-ClientSocket.send(cResp.encode('utf-8'))
-
-print("\n\nWELCOME TO THE TAX PROPERTY ONLINE SYSTEM")
-
+#Response = ClientSocket.recv(1024)
+#print(Response.decode('utf-8'))
+#cResp = "Client 1 is connected to the server!"
+#ClientSocket.send(str.encode(cResp))
+welcome = ClientSocket.recv(2048)
+print(welcome.decode("utf-8"))
 
 input_ic = input('Please enter your Identity Card: ')
-ic = input_ic
-user_ic = ic[6]+ic[7]
-con_ic = int(user_ic)
-os.system('clear')
+ClientSocket.send(str.encode(input_ic))
+ResponseIC=ClientSocket.recv(2048)
+print(ResponseIC.decode("utf-8"))
 
-if con_ic < 17:
-            print('IC: ', ic)
-            print('Warganegara, you are required to pay 20% of your value rate')
-            prop_val = input('Please enter your Property Value: ')
-            address = input('Please enter your Address: ')
-            owneryear = input ('Please enter period of ownership: ')
-else:
-            print('IC: ', ic)
-            print('Foreigner, you are required to pay 30% of your value rate')
-            prop_val = int(input('Please enter your Property Value: '))
-            address = input('Please enter your Address: ')
-            owneryear = int(input ('Please enter period of ownership: '))
+
+#prop_val = input('Please enter your Property Value: ')
+#address = input('Please enter your Address: ')
+#owneryear = input ('Please enter period of ownership: ')
+
 
 print("""
                  MENU
