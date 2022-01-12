@@ -7,12 +7,21 @@ from multiprocessing import Process
 ok_message = 'HTTP/1.0 200 OK\n\n'
 nok_message = 'HTTP/1.0 404 NotFound\n\n'
 
-
 def process_start(s_sock):
-    s_sock.send(str.encode('Hi!\n'))
-    msg2 =s_sock.recv(1024)
-    print(msg2.decode('utf-8'))
-    s_sock.close()
+    s_sock.send(str.encode("\n\nWELCOME TO THE TAX PROPERTY ONLINE SYSTEM"))
+
+def readIC(s_sock):
+    ic = s_sock.recv(2048)
+    ic = ic.decode("utf-8")
+    user_ic = ic[6]+ic[7]
+    con_ic = int(user_ic)
+
+    if con_ic <17:
+                nation = ("IC:" + str(con_ic) + "Warganegara, you are required to pay 20% of your value rate")
+    else:
+                nation = ("IC:" + str(con_ic) + "Foreigner, you are required to pay 30% of your value rate")
+                
+    s_sock.send(str.encode(nation))
 
 
 if __name__ == '__main__':
@@ -25,8 +34,13 @@ if __name__ == '__main__':
         while True:
             try:
                 s_sock, s_addr = s.accept()
-                p = Process(target=process_start, args=(s_sock,))
-                p.start()
+                p1 = Process(target=process_start, args=(s_sock,))
+                p2 = Process(target=readIC, args=(s_sock,))
+                p1.start()
+                p2.start()
+
+                p1.join()
+                p2.join()
 
             except socket.error:
                 print('got a socket error')
