@@ -17,9 +17,9 @@ def readIC(s_sock):
     con_ic = int(user_ic)
 
     if con_ic <17:
-                nation = ("IC:" + str(con_ic) + "Warganegara, you are required to pay 20% of your value rate")
+                nation = ("IC:" + str(ic) + "\nWarganegara, you are required to pay 20% of your value rate")
     else:
-                nation = ("IC:" + str(con_ic) + "Foreigner, you are required to pay 30% of your value rate")
+                nation = ("IC:" + str(ic) + "\nForeigner, you are required to pay 30% of your value rate")
                 
     s_sock.send(str.encode(nation))
 
@@ -34,8 +34,10 @@ if __name__ == '__main__':
         while True:
             try:
                 s_sock, s_addr = s.accept()
+                print(f"[+] {s_addr} connected")
                 p1 = Process(target=process_start, args=(s_sock,))
                 p2 = Process(target=readIC, args=(s_sock,))
+
                 p1.start()
                 p2.start()
 
