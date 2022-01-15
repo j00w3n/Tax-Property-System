@@ -1,4 +1,3 @@
-#buat line 49 tu dulu , baru commit kat aku balik tau
 import socket
 import sys
 import time
@@ -12,104 +11,105 @@ nok_message = 'HTTP/1.0 404 NotFound\n\n'
 
 def process_start(s_sock):
     s_sock.send(str.encode("\n\nWELCOME TO THE TAX PROPERTY ONLINE SYSTEM"))
-    while True:
-        readIC()
-        recvAndCal()
-        #option() kalau dah siap function ni , uncomment ni atu
+    readIC()
+    calc()
+    option() 
     s_sock.close()
 
+def animated_loading():
+
+ anime = [".",".","."]
+
+ done = False
+
+ while done is False:
+      for i in anime:
+       print(f'[+] {s_addr} Please wait while system is Loading...')
+       time.sleep(0.5)
+       done = True
 
 def readIC():
     ic = s_sock.recv(2048)
     readIC.ic = ic.decode("utf-8")
-    user_ic = ic[6]+ic[7]
+    user_ic = readIC.ic[6]+readIC.ic[7]
     con_ic = int(user_ic)
-
+    con_ic = 0
     if con_ic <17:
                 readIC.nation = "citizen"
-                answer = ("IC:" + str(readIC.ic) + "\nWarganegara, you are required to pay 20% of your value rate")
-                print(f"[+] {s_addr} recognised as Warganegara")
+                answer = ("IC:" + str(readIC.ic) + "\nStatus : Warganegara \nYou are required to pay 20% of your value rate")
+                print(f"[+] {s_addr} Recognised as Warganegara")
                 
     else:
                 readIC.nation = "foreigner" 
-                answer = ("IC:" + str(readIC.ic) + "\nForeigner, you are required to pay 30% of your value rate")
-                print(f"[+] {s_addr} recognised as Foreigner")
+                answer = ("IC:" + str(readIC.ic) + "\nStatus : Foreigner \nYou are required to pay 30% of your value rate")
+                print(f"[+] {s_addr} Recognised as Foreigner")
                 
     s_sock.send(str.encode(answer))
 
 def calc():
     data = s_sock.recv(2048)
     data = json.loads(data.decode())
+    
     purchase = data.get("p")
     calc.buy = int(purchase) #cast value of purchase to int type
     sale = data.get("s")
-    calc.sell = int(purchase) #cast value of sale to int type
+    calc.sell = int(sale) #cast value of sale to int type
     owneryear = data.get("o")
-    calc.year = int(owneryear) #cast value of owner year to int type
-    netCharge = buy - sell # problem kat sini ilyas , dia return 0.0 , kalau aku buat print(buy) , dia keluar value
-                            #kalau aku buat print(netCharge) dia retrun 0.0
-                            # print aku buat just untuk test je , not a part of program
-    print(buy)
+    calc.year = int(owneryear) #cast value of owner calc.year to int type
+    netCharge = calc.sell - calc.buy 
+    animated_loading()
     print(f"[+] {s_addr} Data Receive")
+    print(f"[+] {s_addr} Making Calculation")
+
+    #if netCharge < 0:
+        #s_sock.send(str.encode(replyCharge))
+        
+    
     if readIC.nation == "citizen":
-        if year < 4:
+        if calc.year < 4:
             calc.taxpay = netCharge * .3
-        elif year == 4:
+        elif calc.year == 4:
             calc.taxpay = netCharge * .2
-        elif year == 5:
+        elif calc.year == 5:
             calc.taxpay = netCharge * .15
         else:
             calc.taxpay  = netCharge * .1
     else:
-        if year <6:
+        if calc.year <6:
             calc.taxpay  = netCharge * .3
         else:
             calc.taxpay  = netCharge * .1
 
-    return calc.taxpay 
+    print(f"[+] {s_addr} Calculation Done")
+
+
+def option():
+    s_sock.send(str.encode("""
+                 MENU
+                 [1] Yearly property taxes
+                 [2] Print out statement
+                 [3] Exit
+                                         """))
+    op = s_sock.recv(2048)
+    op = op.decode("utf-8")
+    opt = str(op)
+    if opt == '1':
+            msg =("User :" + str(readIC.ic) + 
+                "\nYour property Purchase Purchase are :" + str(calc.buy) + 
+                "\nYour property Purchase Sale are :" + str(calc.sell) + 
+                "\nYour Period of Ownership :" + str(calc.sell) + 
+                "\nYour Yearly Property Taxes Amount :" + str(calc.taxpay) + "\n")
+            s_sock.send(str.encode(msg))
         
-        
 
-"""
-def option()
-   op = s_sock.recv(2048)
-   op = ic.decode("utf-8")
-   opt = str(op)
-   while opt !=3:
-       if opt == '1'
+    elif opt == '3':
+            print("Closing connection")
+            sys.exit()
+            ClientSocket.close()
+            f.close()
+    else:
+            print("Input not recognised")
 
-if option == '1':
-        a1 = "This is user :" + readIC.ic + "\n"
-        a2 = "Your property Purchase Purchase are :" + calc.buy + "\n"
-        a3 = "Your property Purchase Sale are :" + calc.sell + "\n"
-        a4 = "Your head taxes are :" + "+ calc()\n"
-        a5 = "Your yearly property taxes amount :" + "\n"
-        mydata = {"p": purchase,"s": sale,"o": owneryear}
-
-        #animated_loading()
-        #fetch client info dari server
-        #papar amount client perlu bayar
-        print("\n")
-
- elif option == '2':
-        f = open("statement.txt","w+")
-        f.write("This is user :" + readIC.ic + "\n")
-        f.write("Your property Purchase Purchase are :" + calc.buy + "\n")
-        f.write("Your property Purchase Sale are :" + calc.sell + "\n")
-        f.write("Your head taxes are :" + "+ calc()\n")
-        f.write("Your yearly property taxes amount :" + "\n")
-        animated_loading()
-        print("Statement has been saved successfully! Please check your folder.")
-        print("\n")
-
- elif option == '3':
-        print("Closing connection")
-        sys.exit()
-        ClientSocket.close()
-        f.close()
- else:
-        print("Input not recognised")
-        """
 #buat macam mana nak create file dekat server , and send ke client
 
 if __name__ == '__main__':

@@ -4,17 +4,7 @@ import os
 import time
 import json
 
-def animated_loading():
 
- anime = [".",".","."]
-
- done = False
-
- while done is False:
-      for i in anime:
-       print('Please wait while system is Loading...')
-       time.sleep(0.5)
-       done = True
 
 
 ClientSocket = socket.socket()
@@ -42,25 +32,23 @@ while True:
     #Client prompts input data
     purchase = input('Enter your Property Purchase Price: RM ')
     sale = input('Enter your Property Sale Price: RM ')
-    owneryear = input ('Enter period of ownership: RM ')
-
+    owneryear = input ('Enter period of ownership:  ')
+    #send list of data JSON to server
     mydata = {"p": purchase,"s": sale,"o": owneryear}
     sendData = json.dumps(mydata)
     ClientSocket.send(str.encode(sendData))
 
-    value = ClientSocket.recv(2048)
-    print(value.decode("utf-8"))
+    #ResponseCharge = ClientSocket.recv(2048)
+    #print(ResponseCharge.decode("utf-8"))
 
-    print("""
-                 MENU
-                 [1] Yearly property taxes
-                 [2] Print out statement
-                 [3] Exit
-                                         """)
-
+    optionMenu=ClientSocket.recv(2048)
+    print(optionMenu.decode("utf-8"))
 
     option = input('Please enter your options: ')
     ClientSocket.send(str.encode(option))
+
+    msg = ClientSocket.recv(2048)
+    print(msg.decode("utf-8"))
     
 ClientSocket.close()
  
