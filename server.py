@@ -98,6 +98,7 @@ def option():
                 "\nYour Period of Ownership :" + str(calc.sell) + 
                 "\nYour Yearly Property Taxes Amount :" + str(calc.taxpay) + "\n")
             s_sock.send(str.encode(msg))
+            print(f"[+] {s_addr} Data has been displayed to the client")
     
     elif opt == '2':
             f = open("statement.txt","x")
@@ -109,6 +110,7 @@ def option():
             s_sock.send(data.encode("utf-8"))
             f.close()
             os.remove("statement.txt")
+            print(f"[+] {s_addr} Statement has been sent to the client")
 
     
 if __name__ == '__main__':
