@@ -8,7 +8,7 @@ FORMAT = "utf-8"
 SIZE = 1024
 ClientSocket = socket.socket()
 
-host = '192.168.253.12'
+host = '192.168.56.5'
 port = 8888
 
 
@@ -35,14 +35,19 @@ print(ResponseIC.decode(FORMAT))
 #Client prompts input data
 purchase = input('Enter your Property Purchase Price: RM ')
 sale = input('Enter your Property Sale Price: RM ')
-owneryear = input ('Enter period of ownership:  ')
+owneryear = input ('Enter period of ownership (Year):  ')
 #send list of data JSON to server 
 mydata = {"p": purchase,"s": sale,"o": owneryear}
 sendData = json.dumps(mydata)
 ClientSocket.send(str.encode(sendData)) #send 4
 
 while True:
+
+    print("Data has been sent to the server!")
+
     print("""
+                TAX PROPERTY ONLINE SYSTEM
+
                  MENU
                  [1] Yearly property taxes
                  [2] Print out statement
@@ -66,4 +71,3 @@ while True:
             file.close()
             
 ClientSocket.close()
- 
