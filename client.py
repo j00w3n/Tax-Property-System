@@ -18,15 +18,19 @@ try:
     ClientSocket.connect((host, port))
 except socket.error as e:
     print(str(e))
-
+#BANNER
 welcome = ClientSocket.recv(1024) #recv 1
 print(welcome.decode(FORMAT))
+banner=ClientSocket.recv(1024) #recv 3
+print(banner.decode(FORMAT))
+#BANNER
 
 #Client enter Ic Number
 input_ic = input('\nPlease enter your Identity Card: ')
 ClientSocket.send(str.encode(input_ic)) #send 2 
 ResponseIC=ClientSocket.recv(1024) #recv 3
 print(ResponseIC.decode(FORMAT))
+
 
 #Client prompts input data
 purchase = input('Enter your Property Purchase Price: RM ')
@@ -61,4 +65,5 @@ while True:
             file.write(fd)
             file.close()
             
-ClientSocket.close(
+ClientSocket.close()
+ 

@@ -5,14 +5,20 @@ import errno
 from multiprocessing import Process
 import json
 import os
-
+from termcolor import colored #pip install termcolor
+from pyfiglet import Figlet #pip install pyfiglet
 
 
 ok_message = 'HTTP/1.0 200 OK\n\n'
 nok_message = 'HTTP/1.0 404 NotFound\n\n'
 
 def process_start(s_sock):
-    s_sock.send(str.encode("\n\nWELCOME TO THE TAX PROPERTY ONLINE SYSTEM"))#send 1 
+    #BANNER
+    s_sock.send(str.encode("\n\nWELCOME TO THE TAX PROPERTY ONLINE SYSTEM"))
+    f = Figlet(font='standard')
+    banner = colored(f.renderText('TAX ONLINE'), 'green')
+    s_sock.send(str.encode(banner))
+    #BANNER
     readIC()
     calc()
     while True:
@@ -105,7 +111,7 @@ def option():
             os.remove("statement.txt")
 
     
-if _name_ == '_main_':
+if __name__ == '__main__':
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind(("",8888))
     print("listening...")
