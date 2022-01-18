@@ -123,7 +123,7 @@ def option():
                 msg =('User :' + str(readIC.ic) + 
                     '\nYour property Purchase Purchase are :' + str(calc.buy) + 
                     '\nYour property Purchase Sale are :' + str(calc.sell) + 
-                    '\nYour Period of Ownership :' + str(calc.sell) + 
+                    '\nYour Period of Ownership :' + str(calc.year) + 
                     '\nYour Yearly Property Taxes Amount :' + str(calc.taxpay) + '\n')
                 s_sock.send(str.encode(msg))
                 print(f'[+] {s_addr} Data has been displayed to the client')
