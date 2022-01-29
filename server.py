@@ -99,7 +99,7 @@ def calc():
             elif calc.year == 5:
                 calc.taxpay = netCharge * .15
             else:
-                calc.taxpay  = netCharge * .1
+                calc.taxpay  = netCharge * .05
         else:
             if calc.year <6:
                 calc.taxpay  = netCharge * .3
