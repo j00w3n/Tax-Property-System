@@ -91,7 +91,7 @@ def calc():
         print(f'[+] {s_addr} Data Received')
         animated_calc()
 
-        if readIC.nation == 'citizen':
+        if readIC.nation == 'Malaysian':
             if calc.year < 4:
                 calc.taxpay = netCharge * .3
             elif calc.year == 4:
